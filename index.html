@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Individual Worker Activity Summary | DSB Premier Construction</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<header class="brand">
+  <div class="company">DSB Premier Construction</div>
+  <h1>Daily Individual Worker Activity Summary</h1>
+  <p class="intro">Please complete this form at the end of each working day. Check today's site sign-in record and provide a short summary of the work completed by each individual operative who was on site. All signed-in operatives should be included in this report.</p>
+</header>
+
+<main>
+
+  <div id="banner" class="banner"></div>
+
+  <form id="workerForm" novalidate>
+
+    <!-- SECTION 1: PROJECT DETAILS -->
+    <section class="card">
+      <h2>1. Project Details</h2>
+
+      <div class="field">
+        <label for="projectName">Project Name<span class="req">*</span></label>
+        <input type="text" id="projectName" name="projectName" placeholder="Enter the project name" required>
+        <div class="field-error">Please enter the project name.</div>
+      </div>
+
+      <div class="field">
+        <label for="serviceType">Project / Service Type<span class="req">*</span></label>
+        <select id="serviceType" name="serviceType" required>
+          <option value="" disabled selected>Select a service type</option>
+          <option>Luxury New Build Home</option>
+          <option>Full House Refurbishment</option>
+          <option>Luxury Home Renovation</option>
+          <option>House Extension</option>
+          <option>Structural Alterations</option>
+          <option>Loft Conversion</option>
+          <option>Timber Frame Construction</option>
+          <option>SIPs Construction</option>
+          <option>Passivhaus / Energy-Efficient Home</option>
+          <option>Sustainable Home Improvements</option>
+          <option>Interior Fit-Out</option>
+          <option>External Works and Landscaping</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="field-error">Please select a service type.</div>
+        <div class="conditional" id="serviceTypeOtherWrap">
+          <label for="serviceTypeOther">Please specify the project or service type<span class="req">*</span></label>
+          <input type="text" id="serviceTypeOther" name="serviceTypeOther">
+          <div class="field-error">Please specify the service type.</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="field">
+          <label for="workDate">Work Date<span class="req">*</span></label>
+          <input type="date" id="workDate" name="workDate" required>
+          <div class="field-error">Please select the work date.</div>
+        </div>
+
+        <div class="field">
+          <label for="siteManager">Site Manager<span class="req">*</span></label>
+          <input type="text" id="siteManager" name="siteManager" placeholder="Full name" required>
+          <div class="field-error">Please enter the site manager's name.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SIGN-IN CHECK -->
+    <section class="card">
+      <h2>2. Sign-In Check</h2>
+
+      <div class="field">
+        <label>Have you checked today's site sign-in record?<span class="req">*</span></label>
+        <div class="radio-group" data-radio-group="signInChecked">
+          <div class="radio-option">
+            <input type="radio" id="signInChecked_yes" name="signInChecked" value="Yes" required>
+            <label class="radio-label" for="signInChecked_yes">Yes</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="signInChecked_no" name="signInChecked" value="No">
+            <label class="radio-label" for="signInChecked_no">No</label>
+          </div>
+        </div>
+        <div class="field-error">Please confirm whether the sign-in record was checked.</div>
+      </div>
+
+      <div class="field">
+        <label for="operativeCount">How many operatives are signed in on site today?<span class="req">*</span></label>
+        <input type="number" id="operativeCount" name="operativeCount" min="1" step="1" required>
+        <div class="field-error">Please enter a number of at least 1.</div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INDIVIDUAL WORKER ACTIVITY -->
+    <section class="card">
+      <h2>3. Individual Worker Activity</h2>
+      <p class="section-sub">Add one entry for every operative signed in on site today, including their shift times. This report is the primary source used to calculate hours &mdash; the QR sign-in record is a supporting check only.</p>
+
+      <div id="workersContainer"></div>
+
+      <div class="daily-total-card" id="dailyTotalCard">
+        <div class="total-row main">
+          <span>Total Labour Hours for Today</span>
+          <span id="dailyTotalHours">0.00</span>
+        </div>
+        <div class="total-row">
+          <span>Worker Entries</span>
+          <span id="dailyWorkerEntries">0</span>
+        </div>
+        <div class="total-row">
+          <span>Operatives Signed In</span>
+          <span id="dailyOperativeCount">0</span>
+        </div>
+        <div class="total-mismatch" id="dailyCountMismatch">Worker entries and operatives signed in do not match. Please review before submitting.</div>
+      </div>
+
+      <button type="button" class="btn btn-add" id="addWorkerBtn">+ Add Another Worker</button>
+    </section>
+
+    <!-- SECTION 4: WORKFORCE CONFIRMATION -->
+    <section class="card">
+      <h2>4. Workforce Confirmation</h2>
+
+      <div class="field">
+        <label>Have all signed-in operatives been included in this activity summary?<span class="req">*</span></label>
+        <div class="radio-group" data-radio-group="allIncluded">
+          <div class="radio-option">
+            <input type="radio" id="allIncluded_yes" name="allIncluded" value="Yes" required>
+            <label class="radio-label" for="allIncluded_yes">Yes</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="allIncluded_no" name="allIncluded" value="No">
+            <label class="radio-label" for="allIncluded_no">No</label>
+          </div>
+        </div>
+        <div class="field-error">Please confirm whether all operatives were included.</div>
+
+        <div class="conditional" id="allIncludedNoWrap">
+          <label for="allIncludedNoReason">Please explain why not all signed-in operatives have been included<span class="req">*</span></label>
+          <textarea id="allIncludedNoReason" name="allIncludedNoReason"></textarea>
+          <div class="field-error">Please provide an explanation.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Are there any individual workforce or productivity concerns to report?<span class="req">*</span></label>
+        <div class="radio-group" data-radio-group="hasConcerns">
+          <div class="radio-option">
+            <input type="radio" id="hasConcerns_no" name="hasConcerns" value="No" required>
+            <label class="radio-label" for="hasConcerns_no">No</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="hasConcerns_yes" name="hasConcerns" value="Yes">
+            <label class="radio-label" for="hasConcerns_yes">Yes</label>
+          </div>
+        </div>
+        <div class="field-error">Please confirm whether there are any concerns.</div>
+
+        <div class="conditional" id="hasConcernsYesWrap">
+          <label for="concernsDetail">Please provide a factual summary of the concern<span class="req">*</span></label>
+          <textarea id="concernsDetail" name="concernsDetail"></textarea>
+          <div class="helper">Describe the issue factually and avoid assumptions or personal comments.</div>
+          <div class="field-error">Please provide a factual summary.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: SITE MANAGER CONFIRMATION -->
+    <section class="card">
+      <h2>5. Site Manager Confirmation</h2>
+
+      <div class="field">
+        <div class="checkbox-field">
+          <input type="checkbox" id="confirmAccuracy" name="confirmAccuracy" required>
+          <label for="confirmAccuracy">I confirm that I have checked today's site sign-in record and that the information provided above is an accurate summary of the individual workforce activities on site today.</label>
+        </div>
+        <div class="field-error">This confirmation is required before submitting.</div>
+      </div>
+
+      <div class="field">
+        <label for="siteManagerSignature">Site Manager Name / Signature<span class="req">*</span></label>
+        <input type="text" id="siteManagerSignature" name="siteManagerSignature" placeholder="Type full name as signature" required>
+        <div class="field-error">Please enter the site manager's name as signature.</div>
+      </div>
+    </section>
+
+    <button type="submit" class="btn btn-submit" id="submitBtn">Submit Daily Workforce Report</button>
+    <button type="button" class="btn btn-reset" id="resetBtn">Reset Form</button>
+
+  </form>
+
+  <footer class="form-footer">DSB Premier Construction &mdash; Internal Site Reporting</footer>
+</main>
+
+<!-- Discrepancy confirmation modal -->
+<div class="modal-overlay" id="discrepancyModal">
+  <div class="modal">
+    <h3>Worker Count Discrepancy</h3>
+    <p id="discrepancyText">The number of worker entries does not match the number of operatives signed in. Do you want to continue anyway?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="discrepancyCancel">Go Back</button>
+      <button type="button" class="btn btn-danger" id="discrepancyContinue">Submit Anyway</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reset confirmation modal -->
+<div class="modal-overlay" id="resetModal">
+  <div class="modal">
+    <h3>Clear the form?</h3>
+    <p>This will remove all entered information. This cannot be undone.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="resetCancel">Cancel</button>
+      <button type="button" class="btn btn-danger" id="resetConfirm">Clear Form</button>
+    </div>
+  </div>
+</div>
+
+<!-- Duplicate name warning modal -->
+<div class="modal-overlay" id="duplicateModal">
+  <div class="modal">
+    <h3>Duplicate Worker Name</h3>
+    <p id="duplicateText">Two or more worker entries appear to use the same name. Do you want to continue anyway?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="duplicateCancel">Go Back</button>
+      <button type="button" class="btn btn-danger" id="duplicateContinue">Submit Anyway</button>
+    </div>
+  </div>
+</div>
+
+<script src="./app.js"></script>
+
+</body>
+</html>
